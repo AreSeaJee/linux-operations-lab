@@ -54,3 +54,20 @@ The inventory did not modify running containers, port mappings, SSH, firewall ru
 ## Evidence gaps
 
 The next read-only privileged audit should capture effective SSH settings, nftables/iptables policy, sudo rules, authorized-key metadata, SMART status, full journal health, and the exact update policy. Raw sensitive output must remain outside Git.
+
+## Read-only audit progress
+
+An unprivileged follow-up audit confirmed:
+
+- `nftables.service` is disabled and inactive, while Netfilter/nftables kernel modules are in use;
+- this does not prove that the host has no active rules because Docker can create runtime rules independently of `nftables.service`;
+- three SSH host-key files exist, keyboard-interactive authentication is explicitly disabled, PAM is enabled, and X11 forwarding is enabled;
+- no authorized-keys file exists for the current administrative account;
+- both APT timers are enabled and active, but `unattended-upgrades` and `needrestart` are not installed;
+- six packages were pending, including security updates for the kernel and OpenSSL;
+- no reboot-required marker was present;
+- persistent user journals passed integrity verification and occupied approximately 12 MiB;
+- no failed systemd units were present;
+- `smartmontools` is not installed, so SMART health is not yet evidenced.
+
+Reading the active firewall rules, effective SSH policy, sudo policy, full system journal, and disk SMART data still requires local sudo authentication. Use the repository's privileged read-only collector and keep its raw report under the ignored `inventory/private/` path.
