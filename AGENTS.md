@@ -23,6 +23,10 @@ Maintain this repository as a public, reproducible Linux operations portfolio. F
 5. Update repository docs, GitHub issue status, and the linked Notion project log.
 6. Automate only after the manual procedure is understood and documented.
 
+## Project documentation
+
+The Notion page `Linux Operations Lab` is the canonical project log for goals, decisions, incidents, learnings, and the next safe step. Before meaningful work, read that page and the relevant GitHub issue. After meaningful work, update only this project's Notion log with the result, GitHub reference, problems, key learning, and next step. Do not modify unrelated Notion content unless explicitly requested.
+
 ## Quality
 
 - Shell scripts must use safe defaults and pass ShellCheck where applicable.
