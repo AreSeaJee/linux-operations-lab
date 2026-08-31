@@ -1,0 +1,17 @@
+host:
+  hostname: server.example.invalid
+  os: Debian GNU/Linux
+  release: "13"
+  architecture: amd64
+network:
+  management_address: 192.0.2.10
+  gateway: 192.0.2.1
+  dns:
+    - 192.0.2.53
+services:
+  - name: ssh
+    port: 22
+    exposure: management-network
+storage:
+  root_filesystem: ext4
+  backup_target: backup.example.invalid

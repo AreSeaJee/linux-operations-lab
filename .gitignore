@@ -1,0 +1,24 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+secrets/
+
+# Ansible and generated data
+*.retry
+ansible/inventories/local/
+inventory/private/
+artifacts/
+reports/private/
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+.DS_Store
