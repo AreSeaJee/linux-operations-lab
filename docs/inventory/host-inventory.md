@@ -51,9 +51,11 @@ This document contains portfolio-relevant facts only. Identifiers and network de
 
 The inventory did not modify running containers, port mappings, SSH, firewall rules, users, groups, mounts, packages, kernel, data, or existing deployment repositories.
 
-## Evidence gaps
+## Remaining evidence gaps
 
-The next read-only privileged audit should capture effective SSH settings, nftables/iptables policy, sudo rules, authorized-key metadata, SMART status, full journal health, and the exact update policy. Raw sensitive output must remain outside Git.
+- SMART health is not evidenced because `smartmontools` is not installed.
+- External IPv6 reachability still depends on router and upstream policy and must be tested from outside the home network.
+- A restore test is still required before any backup can be considered successful.
 
 ## Read-only audit progress
 
@@ -70,4 +72,27 @@ An unprivileged follow-up audit confirmed:
 - no failed systemd units were present;
 - `smartmontools` is not installed, so SMART health is not yet evidenced.
 
-Reading the active firewall rules, effective SSH policy, sudo policy, full system journal, and disk SMART data still requires local sudo authentication. Use the repository's privileged read-only collector and keep its raw report under the ignored `inventory/private/` path.
+The privileged collector was run locally. Its raw report remains under the ignored `inventory/private/` path and is not part of Git history.
+
+## Privileged audit findings
+
+The locally executed privileged collector confirmed:
+
+- SSH listens on all IPv4 and IPv6 addresses on the standard port;
+- public-key authentication is enabled, but no authorized-keys file was found for the inspected accounts;
+- password authentication is enabled;
+- direct root login is restricted to key-based authentication;
+- X11 and TCP forwarding are enabled;
+- the administrative account has unrestricted sudo access with password authentication;
+- IPv4 and IPv6 host `INPUT` policies accept traffic by default;
+- the active Netfilter ruleset is primarily Docker-generated NAT and forwarding policy, not a documented host-firewall baseline;
+- IPv4 forwarding defaults to drop outside the Docker-managed paths, while IPv6 forwarding defaults to accept;
+- Docker publishes HTTP and an application port through IPv4 rules; the application port is additionally constrained to loopback by a raw-table rule;
+- no failed systemd units were present;
+- the reviewed high-priority journal entries contained no unexplained active service failure; most authentication errors were produced by the read-only audit attempts;
+- six updates remained pending, including kernel and OpenSSL security updates, and no reboot marker was present;
+- `smartctl` remains unavailable and no SMART conclusion can be made.
+
+## Priority conclusion
+
+Before disabling password authentication, a tested SSH public-key login and recovery session must exist. After that, define a Docker-compatible host firewall for IPv4 and IPv6. Do not apply either change remotely without a second active session and rollback path.

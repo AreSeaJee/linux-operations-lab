@@ -2,6 +2,19 @@
 
 Status: draft; no hardening changes applied yet.
 
+## Observed baseline
+
+- SSH password authentication is enabled.
+- No authorized-keys file was found during the privileged metadata audit.
+- Root SSH login is key-only rather than fully disabled.
+- X11 forwarding and TCP forwarding are enabled.
+- SSH listens on all IPv4 and IPv6 addresses.
+- Host input policy defaults to accept for IPv4 and IPv6.
+- Existing firewall rules are predominantly managed by Docker and do not constitute a documented host-firewall baseline.
+- The administrative account has unrestricted password-protected sudo access.
+
+The immediate safe order is: establish and verify public-key access, preserve a recovery session, then design and test the host firewall. Password authentication must not be disabled before key-based access is proven.
+
 ## Baseline controls
 
 - inventory every externally reachable listener on IPv4 and IPv6
