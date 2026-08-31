@@ -51,11 +51,10 @@ This document contains portfolio-relevant facts only. Identifiers and network de
 
 The inventory did not modify running containers, port mappings, SSH, firewall rules, users, groups, mounts, packages, kernel, data, or existing deployment repositories.
 
-## Remaining evidence gaps
+## Follow-up validations
 
-- SMART health is not evidenced because `smartmontools` is not installed.
-- External IPv6 reachability still depends on router and upstream policy and must be tested from outside the home network.
-- A restore test is still required before any backup can be considered successful.
+- External IPv6 reachability depends on router and upstream policy and will be tested in v0.3 from outside the home network.
+- A restore test remains a v0.6 requirement before any backup can be considered successful.
 
 ## Read-only audit progress
 
@@ -70,7 +69,7 @@ An unprivileged follow-up audit confirmed:
 - no reboot-required marker was present;
 - persistent user journals passed integrity verification and occupied approximately 12 MiB;
 - no failed systemd units were present;
-- `smartmontools` is not installed, so SMART health is not yet evidenced.
+- `smartmontools` was initially absent, so the first pass could not evidence SMART health.
 
 The privileged collector was run locally. Its raw report remains under the ignored `inventory/private/` path and is not part of Git history.
 
@@ -91,7 +90,14 @@ The locally executed privileged collector confirmed:
 - no failed systemd units were present;
 - the reviewed high-priority journal entries contained no unexplained active service failure; most authentication errors were produced by the read-only audit attempts;
 - six updates remained pending, including kernel and OpenSSL security updates, and no reboot marker was present;
-- `smartctl` remains unavailable and no SMART conclusion can be made.
+- after explicit approval, `smartmontools` was installed and the package enabled its default monitoring daemon;
+- the SSD's overall SMART assessment passed;
+- no retired blocks, reallocation events, reported uncorrectable errors, offline uncorrectable errors, or interface CRC errors were reported;
+- the observed temperature was within the device's recorded operating range;
+- vendor-specific wear indicators did not cross their declared failure thresholds;
+- the raw SMART report remains private and ignored by Git.
+
+The default SMART daemon now scans available devices periodically and reports through the distribution's local runner. Notification delivery has not yet been proven and belongs in the monitoring milestone.
 
 ## Priority conclusion
 
