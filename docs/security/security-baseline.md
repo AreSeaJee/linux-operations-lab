@@ -17,6 +17,8 @@ The immediate safe order is: establish and verify public-key access, preserve a 
 
 The administrator has explicitly chosen to retain SSH password authentication for now. This is recorded as [ADR 0001](../decisions/0001-retain-ssh-password-authentication.md). V0.3 will therefore focus on exposure, logging, rate limiting, and a Docker-compatible IPv4/IPv6 firewall without changing the login method.
 
+Host-firewall enforcement is temporarily deferred during active service development under [ADR 0002](../decisions/0002-defer-host-firewall-during-development.md). This is a documented risk acceptance, not a completed firewall baseline.
+
 ## Baseline controls
 
 - inventory every externally reachable listener on IPv4 and IPv6
