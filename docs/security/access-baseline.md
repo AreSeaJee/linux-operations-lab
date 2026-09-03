@@ -16,7 +16,8 @@ No account, group, permission, ACL, SSH key, container, or service was changed d
 - The administrator password does not expire under the current local aging policy.
 - No authorized-keys file was found during the earlier privileged host audit.
 - The root password state could not be read without another locally authenticated privileged collection.
-- The `acl` user-space tools are not installed, so named POSIX ACLs have not yet been comprehensively inspected.
+- The `acl` user-space tools were installed after explicit approval.
+- No extended ACL was found in the accessible scan of the repository, `/etc`, `/opt`, `/srv`, or `/var/lib`; protected subtrees still require the privileged summary.
 - Nine active systemd services use the default/root execution identity; two system services use dedicated non-login identities, in addition to the regular user's service manager.
 - Of 23 running containers, 13 have an empty or root container user configuration and 10 declare a non-root identity. Container root is namespaced but increases impact when combined with broad mounts, capabilities, or socket access.
 - Standard subordinate UID and GID ranges exist for the regular account.
@@ -39,7 +40,7 @@ No account, group, permission, ACL, SSH key, container, or service was changed d
 4. Desktop and removable-media groups should be justified individually on a headless server before any removal is proposed.
 5. Container workloads with root as their configured identity require mount, capability, and socket review in their owning project.
 6. Password aging is effectively unlimited; the appropriate control depends on remote access, password quality, and the future key-authentication policy.
-7. ACL state cannot be fully evidenced until the read-only ACL tooling is available.
+7. ACL tooling is now available, but protected service paths still require the sanitized privileged scan.
 
 ## Deliberate non-changes
 
@@ -51,4 +52,4 @@ No account, group, permission, ACL, SSH key, container, or service was changed d
 
 ## Next validation
 
-Install the small `acl` tooling package only after explicit approval, then capture named ACLs on selected administration, service, and data paths. A short privileged summary should also classify root and system-account password states without publishing account names or hashes.
+Run the sanitized privileged access collector. It classifies root, human, and system-account password states and counts ACL-bearing objects without publishing account names, hashes, key contents, or private paths.
