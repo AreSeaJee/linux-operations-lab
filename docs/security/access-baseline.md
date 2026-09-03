@@ -15,9 +15,10 @@ No account, group, permission, ACL, SSH key, container, or service was changed d
 - The repository directory uses mode `0775`, but its private primary group has no additional members.
 - The administrator password does not expire under the current local aging policy.
 - No authorized-keys file was found during the earlier privileged host audit.
-- The root password state could not be read without another locally authenticated privileged collection.
+- Root and the human administrator have set passwords; no account has an empty password.
+- All inspected system-account password entries are locked.
 - The `acl` user-space tools were installed after explicit approval.
-- No extended ACL was found in the accessible scan of the repository, `/etc`, `/opt`, `/srv`, or `/var/lib`; protected subtrees still require the privileged summary.
+- No extended ACL was found within the defined scan depth under `/etc`, `/opt`, `/srv`, `/home`, or Docker volume storage.
 - Nine active systemd services use the default/root execution identity; two system services use dedicated non-login identities, in addition to the regular user's service manager.
 - Of 23 running containers, 13 have an empty or root container user configuration and 10 declare a non-root identity. Container root is namespaced but increases impact when combined with broad mounts, capabilities, or socket access.
 - Standard subordinate UID and GID ranges exist for the regular account.
@@ -40,7 +41,7 @@ No account, group, permission, ACL, SSH key, container, or service was changed d
 4. Desktop and removable-media groups should be justified individually on a headless server before any removal is proposed.
 5. Container workloads with root as their configured identity require mount, capability, and socket review in their owning project.
 6. Password aging is effectively unlimited; the appropriate control depends on remote access, password quality, and the future key-authentication policy.
-7. ACL tooling is now available, but protected service paths still require the sanitized privileged scan.
+7. No named ACL is currently part of the reviewed access model; future ACL use therefore needs explicit documentation and tests.
 
 ## Deliberate non-changes
 
@@ -50,6 +51,8 @@ No account, group, permission, ACL, SSH key, container, or service was changed d
 - Do not change service or container identities without mapping file ownership, mounts, capabilities, and startup behavior.
 - Do not introduce service accounts until a concrete service requires one.
 
-## Next validation
+## V0.2 conclusion
 
-Run the sanitized privileged access collector. It classifies root, human, and system-account password states and counts ACL-bearing objects without publishing account names, hashes, key contents, or private paths.
+The current access model is simple but highly privileged: one human administrator has full sudo and Docker control, while system accounts are non-interactive and password-locked. Classical Unix mode bits are used without named ACLs in the reviewed paths. No empty passwords or SSH authorized-key files were found.
+
+The next safe improvement belongs to v0.3: establish and verify public-key SSH access before changing password authentication, root-login policy, forwarding, or firewall rules.
