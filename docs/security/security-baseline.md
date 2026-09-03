@@ -15,6 +15,8 @@ Status: draft; no hardening changes applied yet.
 
 The immediate safe order is: establish and verify public-key access, preserve a recovery session, then design and test the host firewall. Password authentication must not be disabled before key-based access is proven.
 
+The administrator has explicitly chosen to retain SSH password authentication for now. This is recorded as [ADR 0001](../decisions/0001-retain-ssh-password-authentication.md). V0.3 will therefore focus on exposure, logging, rate limiting, and a Docker-compatible IPv4/IPv6 firewall without changing the login method.
+
 ## Baseline controls
 
 - inventory every externally reachable listener on IPv4 and IPv6
