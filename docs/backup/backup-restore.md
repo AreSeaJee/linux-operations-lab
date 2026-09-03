@@ -2,6 +2,8 @@
 
 Current status: no verified host-level backup and restore workflow.
 
+Centralized host backup is temporarily deferred under [ADR 0003](../decisions/0003-defer-host-backup.md). Workloads currently manage backups individually. This does not yet prove coverage of host state or practical recoverability.
+
 ## Definition of done
 
 A backup is successful only when:
