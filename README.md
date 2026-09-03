@@ -26,6 +26,7 @@ Start with:
 - [Inventory](docs/inventory/host-inventory.md)
 - [Architecture](docs/architecture/host-architecture.md)
 - [Security baseline](docs/security/security-baseline.md)
+- [Access and permissions baseline](docs/security/access-baseline.md)
 - [Roadmap](docs/roadmap.md)
 - [Redaction policy](inventory/redaction-policy.md)
 
